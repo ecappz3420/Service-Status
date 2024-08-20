@@ -1,0 +1,27 @@
+.container-fluid{
+    font-family: 'Inter',sans-serif;
+}
+.table thead tr th{
+    font-size: 13px;
+    padding: 6px !important;
+}
+.table tbody tr td{
+    font-size: 13px;
+    padding: 6px !important;
+    .form-switch{
+        font-size: 20px;
+    }
+}
+.bg-blue{
+    background: #0f4890 !important;
+}
+.bg-light-blue{
+background-color: #e7edfd;
+}
+.form-check-input:checked {
+    background-color: #07bdf0 !important;
+    border-color: white !important;
+}
+::-webkit-scrollbar{
+    width: 1px;
+}
