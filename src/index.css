@@ -22,6 +22,10 @@ background-color: #e7edfd;
     background-color: #07bdf0 !important;
     border-color: white !important;
 }
+.timer{
+    font-size: 10px;
+    margin-top: 10px;
+}
 ::-webkit-scrollbar{
     width: 1px;
 }
