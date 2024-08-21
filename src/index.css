@@ -26,6 +26,13 @@ background-color: #e7edfd;
     font-size: 10px;
     margin-top: 10px;
 }
+.body-container{
+    margin-top: 60px;
+}
 ::-webkit-scrollbar{
     width: 1px;
+}
+.table-header{
+    width: 100px;
+    text-wrap: nowrap;
 }

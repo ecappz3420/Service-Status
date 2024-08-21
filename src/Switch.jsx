@@ -23,6 +23,8 @@ const Switch = () => {
     setPendingToggle(null);  
   };
 
+
+
   return (
     <>
       <div className="form-check form-switch d-flex justify-content-center gap-2 align-items-center">
@@ -36,14 +38,14 @@ const Switch = () => {
       </div>
 
       <div className={`modal ${showModal ? 'show d-block' : 'fade'}`} tabIndex="-1" role="dialog">
-        <div className="modal-dialog" role="document">
+        <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-body">
               Please confirm to update!
             </div>
-            <div className="modal-footer text-center">
-              <button className='btn btn-secondary' onClick={handleCancel}>Cancel</button>
-              <button className='btn btn-primary' onClick={handleConfirm}>Confirm</button>
+            <div className="modal-footer justify-content-center">
+              <button className='btn btn-secondary btn-sm' onClick={handleCancel}>Cancel</button>
+              <button className='btn btn-primary btn-sm' onClick={handleConfirm}>Confirm</button>
             </div>
           </div>
         </div>

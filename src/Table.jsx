@@ -1,8 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Switch from './Switch'
 import PropTypes from 'prop-types'
 
 const Table = ({ source }) => {
+
+    const [services , setServices] = useState([]);
+    useEffect(()=>{
+        const fetchRecords = async () => {
+            const config = {
+                appName: "service-status",
+                reportName: "All_Services",
+                criteria: `Source == "${source}"`
+              }
+              await ZOHO.CREATOR.init();
+              const response = await ZOHO.CREATOR.API.getAllRecords(config);
+              
+        }
+    },[])
 
     return (
         <>
@@ -18,7 +32,7 @@ const Table = ({ source }) => {
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{source}</td>
+                            <td className='table-header'>{source}</td>
                             <td>
                                 <Switch />
                             </td>
