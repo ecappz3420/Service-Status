@@ -1,5 +1,5 @@
 .container-fluid{
-    font-family: 'Inter',sans-serif;
+    font-family: 'Poppins',sans-serif;
 }
 .table thead tr th{
     font-size: 13px;
@@ -15,6 +15,9 @@
 .bg-blue{
     background: #0f4890 !important;
 }
+.btn-primary{
+    background: #0f4890 !important;
+}
 .bg-light-blue{
 background-color: #e7edfd;
 }
@@ -24,7 +27,7 @@ background-color: #e7edfd;
 }
 .timer{
     font-size: 10px;
-    margin-top: 10px;
+    margin-top: 4px;
 }
 .body-container{
     margin-top: 60px;
