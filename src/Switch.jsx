@@ -1,21 +1,99 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const Switch = () => {
+const Switch = (props) => {
   const [toggle, setToggle] = useState(true);
   const [pendingToggle, setPendingToggle] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [startTime, setStartTime] = useState("");
+  const [timeDiff, setTimeDiff] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    const fetchPreviousStatus = async () => {
+      const config = {
+        appName: "service-status",
+        reportName: "Service_Status_Report",
+        criteria: `Source == ${props.source_id} && Service == ${props.service_id} && Start_Time != null && End_Time == null`
+      };
+      try {
+        await ZOHO.CREATOR.init();
+        const response = await ZOHO.CREATOR.API.getAllRecords(config);
+        if (response.data && response.data.length > 0) {
+          setStartTime(response.data[0].Start_Time);
+          setToggle(response.data[0].Status == "Up" ? true : false);
+        }
+      } catch (err) {
+        console.error("Error fetching previous status:", err);
+      }
+    };
+    fetchPreviousStatus();
+  }, [props.source_id, props.service_id, toggle]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const now = formatDateTime();
+      calculateTimeDifference(startTime, now);
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, [startTime]);
+
+  const calculateTimeDifference = (startDateTime, endDateTime) => {
+    const startDate = new Date(startDateTime);
+    const endDate = new Date(endDateTime);
+    const diff = endDate - startDate;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    setTimeDiff({ days, hours, minutes, seconds });
+  };
+
+  const formatDateTime = () => {
+    const now = new Date();
+    const day = `${now.getDate()}`.padStart(2, '0');
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = monthNames[now.getMonth()];
+    const year = now.getFullYear();
+    const hours = `${now.getHours()}`.padStart(2, '0');
+    const minutes = `${now.getMinutes()}`.padStart(2, '0');
+    const seconds = `${now.getSeconds()}`.padStart(2, '0');
+    return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+  };
 
   const handleToggleClick = (e) => {
     setPendingToggle(e.target.checked);
     setShowModal(true);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (pendingToggle !== null) {
       setToggle(pendingToggle);
+      setShowModal(false);
+      setPendingToggle(null);
+      await createServiceStatus(pendingToggle);
     }
-    setShowModal(false);
-    setPendingToggle(null);
+  };
+
+  const createServiceStatus = async (status) => {
+    const now = formatDateTime();
+    const formData = {
+      data: {
+        Source: props.source_id,
+        Service: props.service_id,
+        Status: status ? "Up" : "Down",
+        Start_Time: now
+      }
+    };
+    const config = {
+      appName: "service-status",
+      formName: "Service_Status_Form",
+      data: formData
+    };
+    try {
+      await ZOHO.CREATOR.init();
+      await ZOHO.CREATOR.API.addRecord(config);
+    } catch (err) {
+      console.error("Error updating service status:", err);
+    }
   };
 
   const handleCancel = () => {
@@ -32,7 +110,9 @@ const Switch = () => {
           checked={toggle}
           onChange={handleToggleClick}
         />
-        <span className='timer'>12:00:00</span>
+        <span className='timer'>
+          {`${timeDiff.hours}h ${timeDiff.minutes}m ${timeDiff.seconds}s`}
+        </span>
       </div>
 
       <div className={`modal ${showModal ? 'show d-block' : 'fade'}`} tabIndex="-1" role="dialog">
@@ -43,7 +123,9 @@ const Switch = () => {
               <button type="button" className="btn-close" onClick={handleCancel} aria-label="Close"></button>
             </div>
             <div className="modal-body">
-              <h6>Do you wish to update the status to Up for the source 'Green Pay' and service No. 1?</h6>
+              <h6>
+                Do you wish to update the status to {toggle ? "Down" : "Up"} for the source {props.source} and {props.service}?
+              </h6>
             </div>
             <div className="modal-footer justify-content-center">
               <button className='btn btn-secondary' onClick={handleCancel}>Cancel</button>
