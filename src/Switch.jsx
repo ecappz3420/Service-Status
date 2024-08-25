@@ -6,6 +6,7 @@ const Switch = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [startTime, setStartTime] = useState("");
   const [timeDiff, setTimeDiff] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [oldRecID, setOldRecID] = useState(0);
 
   useEffect(() => {
     const fetchPreviousStatus = async () => {
@@ -19,6 +20,7 @@ const Switch = (props) => {
         const response = await ZOHO.CREATOR.API.getAllRecords(config);
         if (response.data && response.data.length > 0) {
           setStartTime(response.data[0].Start_Time);
+          setOldRecID(response.data[0].ID);
           setToggle(response.data[0].Status == "Up" ? true : false);
         }
       } catch (err) {
@@ -66,10 +68,13 @@ const Switch = (props) => {
 
   const handleConfirm = async () => {
     if (pendingToggle !== null) {
+      await updateServiceStatus();
+      await createServiceStatus(pendingToggle);
       setToggle(pendingToggle);
       setShowModal(false);
       setPendingToggle(null);
-      await createServiceStatus(pendingToggle);
+     
+     
     }
   };
 
@@ -96,6 +101,31 @@ const Switch = (props) => {
     }
   };
 
+  const updateServiceStatus = async () => {
+    if(oldRecID){
+      const now = formatDateTime();
+      const formData = {
+        "data" : {
+          "End_Time" : now,
+        }
+      }
+      const config = {
+        appName : "service-status",
+        reportName: "Service_Status_Report",
+        id: oldRecID,
+        data: formData
+      }
+      try{
+        await ZOHO.CREATOR.init();
+        const response = await ZOHO.CREATOR.API.updateRecord(config);
+      }
+      catch(err)
+      {
+
+      }
+    }
+  }
+
   const handleCancel = () => {
     setShowModal(false);
     setPendingToggle(null);
@@ -103,16 +133,16 @@ const Switch = (props) => {
 
   return (
     <>
-      <div className="form-check form-switch d-flex justify-content-center gap-2 align-items-center">
+      <div className="form-check form-switch d-flex justify-content-center gap-2 align-items-center w-100">
         <input
           type="checkbox"
-          className="form-check-input"
+          className="form-check-input cursor-pointer"
           checked={toggle}
           onChange={handleToggleClick}
         />
-        <span className='timer'>
-          {`${timeDiff.hours}h ${timeDiff.minutes}m ${timeDiff.seconds}s`}
-        </span>
+        <label className='timer'>
+          {`${timeDiff.days}d ${timeDiff.hours}h ${timeDiff.minutes}m`}
+        </label>
       </div>
 
       <div className={`modal ${showModal ? 'show d-block' : 'fade'}`} tabIndex="-1" role="dialog">

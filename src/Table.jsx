@@ -26,8 +26,8 @@ const Table = ({ source, source_id }) => {
 
     return (
         <>
-            <div className="container-fluid mt-3 w-100 overflow-x-auto">
-                <table className='table table-responsive table-hover text-center align-middle w-100'>
+            <div className="container-fluid mt-1 w-100 p-0 overflow-x-auto">
+                <table className='table text-center align-middle w-100'>
                     <thead>
                         <tr>
                             <th className='bg-blue text-white'>Source</th>
@@ -43,7 +43,7 @@ const Table = ({ source, source_id }) => {
                             <td className='table-header fw-bold'>{source}</td>
                             {
                                 services.map((service, index) => (
-                                    <td key={index}>
+                                    <td key={index} className='mw-200'>
                                         <Switch source={source} source_id={source_id} service_id={service.ID} service={service.Service} />
                                     </td>
                                 ))

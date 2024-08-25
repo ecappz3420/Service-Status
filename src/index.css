@@ -27,7 +27,6 @@ background-color: #e7edfd;
 }
 .timer{
     font-size: 10px;
-    margin-top: 4px;
 }
 .body-container{
     margin-top: 60px;
@@ -38,4 +37,10 @@ background-color: #e7edfd;
 .table-header{
     width: 100px;
     text-wrap: nowrap;
+}
+.mw-200{
+    min-width: 100px;
+}
+.cursor-pointer{
+    cursor: pointer;
 }
