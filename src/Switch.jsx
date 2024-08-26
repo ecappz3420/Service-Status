@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Switch = (props) => {
-  const [toggle, setToggle] = useState(true);
+  const [toggle, setToggle] = useState(false);
   const [pendingToggle, setPendingToggle] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [startTime, setStartTime] = useState("");
@@ -141,7 +141,7 @@ const Switch = (props) => {
           onChange={handleToggleClick}
         />
         <label className='timer'>
-          {`${timeDiff.days}d ${timeDiff.hours}h ${timeDiff.minutes}m`}
+          {timeDiff.hours ? `${timeDiff.days}d ${timeDiff.hours}h ${timeDiff.minutes}m`: "Yet to Start"}
         </label>
       </div>
 
