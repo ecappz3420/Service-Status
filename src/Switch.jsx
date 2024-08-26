@@ -141,7 +141,7 @@ const Switch = (props) => {
           onChange={handleToggleClick}
         />
         <label className='timer'>
-          {timeDiff.hours ? `${timeDiff.days}d ${timeDiff.hours}h ${timeDiff.minutes}m`: "Yet to Start"}
+          {isNaN(timeDiff.hours) ?"Yet to Start" : `${timeDiff.days}d ${timeDiff.hours}h ${timeDiff.minutes}m`}
         </label>
       </div>
 
