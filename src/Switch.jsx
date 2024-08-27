@@ -19,6 +19,7 @@ const Switch = (props) => {
         await ZOHO.CREATOR.init();
         const response = await ZOHO.CREATOR.API.getAllRecords(config);
         if (response.data && response.data.length > 0) {
+          console.log(response.data[0].Start_Time);
           setStartTime(response.data[0].Start_Time);
           setOldRecID(response.data[0].ID);
           setToggle(response.data[0].Status == "Up" ? true : false);
@@ -136,12 +137,12 @@ const Switch = (props) => {
       <div className="form-check form-switch d-flex justify-content-center gap-2 align-items-center w-100">
         <input
           type="checkbox"
-          className="form-check-input cursor-pointer"
+          className={`form-check-input cursor-pointer`}
           checked={toggle}
           onChange={handleToggleClick}
         />
         <label className='timer'>
-          {isNaN(timeDiff.hours) ?"Yet to Start" : `${timeDiff.days}d ${timeDiff.hours}h ${timeDiff.minutes}m`}
+          {isNaN(timeDiff.hours) ?"Yet to Start" : `${timeDiff.days}d ${timeDiff.hours}h ${timeDiff.minutes}m ${timeDiff.seconds}s`}
         </label>
       </div>
 
