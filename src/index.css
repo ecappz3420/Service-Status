@@ -4,11 +4,12 @@
 .table thead tr th{
     font-size: 13px;
     padding: 6px !important;
+    width: 16.66% !important;
 }
 .table tbody tr td{
     font-size: 13px;
     padding: 6px !important;
-    min-width: 200px;
+    width: 16.66% !important;
     .form-switch{
         font-size: 20px;
     }
@@ -43,7 +44,6 @@ background-color: #e7edfd;
     width: 1px;
 }
 .table-header{
-    width: 100px;
     text-wrap: nowrap;
 }
 .mw-200{

@@ -19,13 +19,12 @@ const Switch = (props) => {
         await ZOHO.CREATOR.init();
         const response = await ZOHO.CREATOR.API.getAllRecords(config);
         if (response.data && response.data.length > 0) {
-          console.log(response.data[0].Start_Time);
           setStartTime(response.data[0].Start_Time);
           setOldRecID(response.data[0].ID);
           setToggle(response.data[0].Status == "Up" ? true : false);
         }
       } catch (err) {
-        console.error("Error fetching previous status:", err);
+
       }
     };
     fetchPreviousStatus();
@@ -98,7 +97,6 @@ const Switch = (props) => {
       await ZOHO.CREATOR.init();
       await ZOHO.CREATOR.API.addRecord(config);
     } catch (err) {
-      console.error("Error updating service status:", err);
     }
   };
 

@@ -11,7 +11,7 @@ const Table = ({ source, source_id }) => {
             const config = {
                 appName: "service-status",
                 reportName: "All_Services",
-                criteria: `Source == ${source_id}`
+                criteria: `Source == ${source_id} && Status == "Active"`
             }
             await ZOHO.CREATOR.init();
             try {
@@ -23,6 +23,7 @@ const Table = ({ source, source_id }) => {
         }
         fetchRecords();
     }, [])
+    const emptyCells = 5 - services.length;
 
     return (
         <>
@@ -36,6 +37,9 @@ const Table = ({ source, source_id }) => {
                                     <th className='bg-blue text-white' key={index}>{service.Service}</th>
                                 ))
                             }
+                             {Array.from({ length: emptyCells }, (_, index) => (
+                            <th key={`empty-${index}`} className=' bg-blue text-white'></th>
+                        ))}
                         </tr>
                     </thead>
                     <tbody>
@@ -43,11 +47,15 @@ const Table = ({ source, source_id }) => {
                             <td className='table-header fw-bold'>{source}</td>
                             {
                                 services.map((service, index) => (
-                                    <td key={index} className='mw-200'>
+                                    <td key={index}>
                                         <Switch source={source} source_id={source_id} service_id={service.ID} service={service.Service} />
                                     </td>
                                 ))
                             }
+                           
+                        {Array.from({ length: emptyCells }, (_, index) => (
+                            <td key={`empty-${index}`} className='mw-200'></td>
+                        ))}
                         </tr>
                     </tbody>
                 </table>
