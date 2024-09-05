@@ -39,10 +39,10 @@ const Table = (props) => {
                 allSource ? (
                     allSource.map((record,index)=> (
                         <tr key={index}>
-                            <td className='fw-bold'>{record.Source}</td>
+                            <td className='fw-bold text-start'>{record.Source}</td>
                             {
                                 props.services.map((service, i) => (
-                                  <td key={i}>
+                                  <td className='text-center' key={i}>
                                     <Switch service_id={service.ID}
                                     source_id={record.ID}
                                     source={record.Source}

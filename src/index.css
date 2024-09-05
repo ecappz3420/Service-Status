@@ -36,10 +36,7 @@ background-color: #e7edfd;
 }
 .timer{
     font-size: 10px;
-    width: 100px;
-}
-.body-container{
-    margin-top: 60px;
+    text-wrap: nowrap;
 }
 ::-webkit-scrollbar{
     width: 1px;
@@ -54,19 +51,25 @@ background-color: #e7edfd;
     cursor: pointer;
 }
 
+.form-check{
+    align-items: center;
+}
+
 @media (width <= 512px) {
     table tbody tr td {
-        min-width: 100px !important;
         font-size: 10px !important;
         label{
             font-size: 7px !important;
         }
     }
+    table thead tr th{
+        font-size: 10px !important;
+    }
     .form-switch{
         font-size: 15px !important;
     }
     .timer{
-        width: 50px;
+        font-size: 8px;
     }
     
 }

@@ -132,17 +132,17 @@ const Switch = (props) => {
 
   return (
     <>
-      <div className="form-check form-switch d-flex justify-content-center gap-2 align-items-center w-100">
+      <div className="form-check form-switch w-100 d-flex justify-content-center">
         <input
           type="checkbox"
           className={`form-check-input ${isNaN(timeDiff.hours) ?"":"inactive"} cursor-pointer`}
           checked={toggle}
           onChange={handleToggleClick}
         />
-        <label className='timer'>
-          {isNaN(timeDiff.hours) ?"Yet to Start" : `${timeDiff.days}d ${timeDiff.hours}h ${timeDiff.minutes}m ${timeDiff.seconds}s`}
-        </label>
       </div>
+      <div className='timer d-block'>
+          {isNaN(timeDiff.hours) ?"Yet to Start" : `${timeDiff.days}d ${timeDiff.hours}h ${timeDiff.minutes}m ${timeDiff.seconds}s`}
+        </div>
 
       <div className={`modal ${showModal ? 'show d-block' : 'fade'}`} tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered" role="document">
