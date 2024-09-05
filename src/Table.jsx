@@ -1,73 +1,68 @@
-import React, { useEffect, useState } from 'react'
-import Switch from './Switch'
-import PropTypes from 'prop-types'
+import React, {useState, useEffect} from 'react'
+import Switch from './Switch';
 
-const Table = ({ source, source_id }) => {
-
-    const [services, setServices] = useState([]);
-
+const Table = (props) => {
+    const [allSource, setAllSource] = useState([]);
     useEffect(() => {
         const fetchRecords = async () => {
-            const config = {
-                appName: "service-status",
-                reportName: "All_Services",
-                criteria: `Source == ${source_id} && Status == "Active"`
-            }
-            await ZOHO.CREATOR.init();
-            try {
-                const response = await ZOHO.CREATOR.API.getAllRecords(config);
-                setServices(response.data);
-            }
-            catch (err) {
-            }
+          const config = {
+            appName: "service-status",
+            reportName: "All_Sources",
+            criteria: `Status == "Active"`
+          }
+          await ZOHO.CREATOR.init();
+          try {
+            const response = await ZOHO.CREATOR.API.getAllRecords(config);
+            const data = response.data;
+            setAllSource(data);
+          }
+          catch (err) {
+          }
         }
         fetchRecords();
-    }, [])
-    const emptyCells = 5 - services.length;
+      }, [])
 
-    return (
-        <>
-            <div className="container-fluid mt-1 w-100 p-0 overflow-x-auto">
-                <table className='table text-center align-middle w-100'>
-                    <thead>
-                        <tr>
-                            <th className='bg-blue text-white'>Source</th>
+  return (
+    <table className='table table-reponsive text-center w-100 align-middle'>
+        <thead>
+            <tr>
+                <th className='bg-blue text-white'>Source</th>
+                {
+                    props.services.map((record, index)=> (
+                        <th className='bg-blue text-white' key={index}>{record.Service}</th>
+                    ) )
+                }
+            </tr>
+        </thead>
+        <tbody>
+            {
+                allSource ? (
+                    allSource.map((record,index)=> (
+                        <tr key={index}>
+                            <td className='fw-bold'>{record.Source}</td>
                             {
-                                services.map((service, index) => (
-                                    <th className='bg-blue text-white' key={index}>{service.Service}</th>
+                                props.services.map((service, i) => (
+                                  <td key={i}>
+                                    <Switch service_id={service.ID}
+                                    source_id={record.ID}
+                                    source={record.Source}
+                                    service={service.Service}
+                                  /></td>  
                                 ))
                             }
-                             {Array.from({ length: emptyCells }, (_, index) => (
-                            <th key={`empty-${index}`} className=' bg-blue text-white'></th>
-                        ))}
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td className='table-header fw-bold'>{source}</td>
-                            {
-                                services.map((service, index) => (
-                                    <td key={index}>
-                                        <Switch source={source} source_id={source_id} service_id={service.ID} service={service.Service} />
-                                    </td>
-                                ))
-                            }
-                           
-                        {Array.from({ length: emptyCells }, (_, index) => (
-                            <td key={`empty-${index}`} className='mw-200'></td>
-                        ))}
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </>
-    )
-}
-
-Table.propTypes = {
-    source: PropTypes.string.isRequired,
-    source_id: PropTypes.string.isRequired
+                    ))
+                )
+                :
+                (
+                    <tr>
+                        <td>No Data to Show</td>
+                    </tr>
+                )
+            }
+        </tbody>
+    </table>
+  )
 }
 
 export default Table

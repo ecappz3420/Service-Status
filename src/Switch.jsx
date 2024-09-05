@@ -13,7 +13,7 @@ const Switch = (props) => {
       const config = {
         appName: "service-status",
         reportName: "Service_Status_Report",
-        criteria: `Source == ${props.source_id} && Service == ${props.service_id} && Start_Time != null && End_Time == null`
+        criteria: `Source == ${props.source_id} && Service_New == ${props.service_id} && Start_Time != null && End_Time == null`
       };
       try {
         await ZOHO.CREATOR.init();
@@ -83,7 +83,7 @@ const Switch = (props) => {
     const formData = {
       data: {
         Source: props.source_id,
-        Service: props.service_id,
+        Service_New: props.service_id,
         Status: status ? "Up" : "Down",
         Start_Time: now
       }
@@ -120,7 +120,7 @@ const Switch = (props) => {
       }
       catch(err)
       {
-
+        console.log(err);
       }
     }
   }
@@ -135,7 +135,7 @@ const Switch = (props) => {
       <div className="form-check form-switch d-flex justify-content-center gap-2 align-items-center w-100">
         <input
           type="checkbox"
-          className={`form-check-input cursor-pointer`}
+          className={`form-check-input ${isNaN(timeDiff.hours) ?"":"inactive"} cursor-pointer`}
           checked={toggle}
           onChange={handleToggleClick}
         />
