@@ -10,7 +10,7 @@ const App = () => {
     const fetchRecords = async () => {
       const config = {
         appName: "service-status",
-        reportName: "All_Service_Masters"
+        reportName: "All_Services"
       }
       try {
         await ZOHO.CREATOR.init();
